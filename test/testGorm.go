@@ -2,6 +2,7 @@ package main
 
 import (
 	"Easy_IM/models"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -26,9 +27,11 @@ func main() {
 
 	usr := &models.UserBasic{}
 
-	usr.Name = "gsd"
-	usr.Password = "123456"
-
+	usr.Name = "gsd1"
+	usr.PassWord = "123456"
+	usr.LoginTime = time.Now()
+	usr.LoginOutTime = time.Now()
+	usr.HeartbeatTime = time.Now()
 	db.Create(usr)
 
 	// Read
