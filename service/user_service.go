@@ -11,6 +11,7 @@ import (
 	"Easy_IM/models"
 	"Easy_IM/utils"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -210,20 +211,20 @@ var upGrader = websocket.Upgrader{
 	},
 }
 
-// func SendMsg(c *gin.Context) {
-// 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return
-// 	}
-// 	defer func(ws *websocket.Conn) {
-// 		err = ws.Close()
-// 		if err != nil {
-// 			fmt.Println(err)
-// 		}
-// 	}(ws)
-// 	MsgHandler(c, ws)
-// }
+func SendMsg(c *gin.Context) {
+	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer func(ws *websocket.Conn) {
+		err = ws.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(ws)
+	MsgHandler(c, ws)
+}
 
 // func RedisMsg(c *gin.Context) {
 // 	userIdA, _ := strconv.Atoi(c.PostForm("userIdA"))
@@ -235,25 +236,26 @@ var upGrader = websocket.Upgrader{
 // 	utils.RespOKList(c.Writer, "ok", res)
 // }
 
-// func MsgHandler(c *gin.Context, ws *websocket.Conn) {
-// 	for {
-// 		msg, err := utils.Subscribe(c, utils.PublishKey)
-// 		if err != nil {
-// 			fmt.Println(" MsgHandler 发送失败", err)
-// 		}
+func MsgHandler(c *gin.Context, ws *websocket.Conn) {
+	for {
+		msg, err := utils.Subscribe(c, utils.PublishKey)
+		if err != nil {
+			fmt.Println(" MsgHandler 发送失败", err)
+		}
 
-// 		tm := time.Now().Format("2006-01-02 15:04:05")
-// 		m := fmt.Sprintf("[ws][%s]:%s", tm, msg)
-// 		err = ws.WriteMessage(1, []byte(m))
-// 		if err != nil {
-// 			log.Fatalln(err)
-// 		}
-// 	}
-// }
+		tm := time.Now().Format("2006-01-02 15:04:05")
+		m := fmt.Sprintf("[ws][%s]:%s", tm, msg)
+		err = ws.WriteMessage(1, []byte(m))
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
+}
 
-// func SendUserMsg(c *gin.Context) {
-// 	models.Chat(c.Writer, c.Request)
-// }
+func SendUserMsg(c *gin.Context) {
+	models.Chat(c.Writer, c.Request)
+}
+
 // func SearchFriends(c *gin.Context) {
 // 	id, _ := strconv.Atoi(c.Request.FormValue("userId"))
 // 	users := models.SearchFriend(uint(id))
