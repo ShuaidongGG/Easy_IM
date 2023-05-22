@@ -21,8 +21,11 @@ func main() {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&models.UserBasic{})
-
+	// db.AutoMigrate(&models.UserBasic{})
+	// db.AutoMigrate(&models.Contact{})
+	// db.AutoMigrate(&models.GroupBasic{})
+	// db.AutoMigrate(&models.Message{})
+	db.AutoMigrate(&models.Community{})
 	// Create
 
 	usr := &models.UserBasic{}
